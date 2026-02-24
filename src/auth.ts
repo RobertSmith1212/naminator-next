@@ -5,6 +5,11 @@ import { prisma } from "@/lib/prisma";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
+
+  session: {
+    strategy: "jwt"
+  },
+
   providers: [
     Google({
       clientId: process.env.AUTH_GOOGLE_ID,
@@ -15,10 +20,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     signIn: "/login",
   },
   callbacks: {
-    session({ session, user }) {
+    session({ session, token }) {
       // Attach the user ID to the session so we can use it in API routes
       if (session.user) {
-        session.user.id = user.id;
+        session.user.id = token.sub!;
       }
       return session;
     },

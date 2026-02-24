@@ -79,7 +79,8 @@ describe("POST /api/name-combinations", () => {
 
   describe("authentication", () => {
     it("returns 401 when auth() returns null", async () => {
-      mockAuth.mockResolvedValueOnce(null);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      mockAuth.mockResolvedValueOnce(null as any);
       const req = makePostRequest({ name1: "John", name2: "Jane" });
       const res = await POST(req);
       expect(res.status).toBe(401);
